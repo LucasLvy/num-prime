@@ -1,4 +1,7 @@
 use core::default::Default;
+#[cfg(not(feature = "std"))]
+use core::ops::{BitAnd, BitOr};
+#[cfg(feature = "std")]
 use std::ops::{BitAnd, BitOr};
 
 use either::Either;

@@ -1,6 +1,9 @@
 //! Wrapper of integer to makes it efficient in modular arithmetics but still have the same
 //! API of normal integers.
 
+use crate::{BitTest, ExactRoots};
+#[cfg(not(feature = "std"))]
+use core::cmp;
 use core::ops::*;
 use either::*;
 use num_integer::{Integer, Roots};
@@ -9,8 +12,8 @@ use num_modular::{
     ReducedInt, Reducer,
 };
 use num_traits::{FromPrimitive, Num, One, Pow, ToPrimitive, Zero};
-
-use crate::{BitTest, ExactRoots};
+#[cfg(feature = "std")]
+use std::cmp;
 
 /// Integer with fast modular arithmetics support, based on [MontgomeryInt] under the hood
 ///
@@ -93,7 +96,7 @@ impl<T: Integer + Clone, R: Reducer<T>> PartialEq for Mint<T, R> {
 impl<T: Integer + Clone, R: Reducer<T>> Eq for Mint<T, R> {}
 
 impl<T: Integer + Clone, R: Reducer<T> + Clone> PartialOrd for Mint<T, R> {
-    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+    fn partial_cmp(&self, other: &Self) -> Option<cmp::Ordering> {
         match (&self.0, &other.0) {
             (Left(v1), Left(v2)) => v1.partial_cmp(v2),
             (Left(v1), Right(v2)) => v1.partial_cmp(&v2.residue()),
@@ -106,7 +109,7 @@ impl<T: Integer + Clone, R: Reducer<T> + Clone> PartialOrd for Mint<T, R> {
     }
 }
 impl<T: Integer + Clone, R: Reducer<T> + Clone> Ord for Mint<T, R> {
-    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+    fn cmp(&self, other: &Self) -> cmp::Ordering {
         match (&self.0, &other.0) {
             (Left(v1), Left(v2)) => v1.cmp(v2),
             (Left(v1), Right(v2)) => v1.cmp(&v2.residue()),

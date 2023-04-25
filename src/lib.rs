@@ -1,3 +1,4 @@
+#![cfg_attr(not(feature = "std"), no_std)]
 // #![doc = include_str!("../README.md")]
 
 //! This crate provides utilities for prime related functionalities and some basic number theoretic functions:
@@ -72,6 +73,9 @@ mod primality;
 mod rand;
 mod tables;
 mod traits;
+#[cfg(not(feature = "std"))]
+#[macro_use]
+extern crate alloc;
 
 pub use traits::*;
 pub mod detail {

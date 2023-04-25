@@ -16,13 +16,13 @@ readme = "README.md"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-num-integer = "0.1.44"
-num-traits = "0.2.14"
-num-modular = "0.5.0"
-bitvec = "1.0.0"
-rand = "0.8.4"
-lru = "0.7.2"
-either = "1.6.1"
+num-integer = { version = "0.1.44", default-features = false }
+num-traits = { version = "0.2.14", default-features = false }
+num-modular = { version = "0.5.0", default-features = false }
+bitvec = { version = "1.0.0", default-features = false, features = ["alloc"] }
+rand = { version = "0.8.4", default-features = false, features = ["getrandom"] }
+lru = { version = "0.7.2", default-features = false }
+either = { version = "1.6.1", default-features = false }
 
 [dependencies.num-bigint]
 optional = true
@@ -30,15 +30,14 @@ version = "0.4.3"
 features = ["rand"]
 
 [features]
-default = ['big-table', 'big-int']
+default = ['std', 'big-table', 'big-int']
+std = ['rand/std', 'rand/std_rng']
 big-table = []
 # TODO: use the new cargo feature to override the num-bigint option
 big-int = ['num-bigint', 'num-modular/num-bigint']
 
 [workspace]
-members = [
-  "bench",
-]
+members = ["bench"]
 
 [package.metadata.docs.rs]
 all-features = true
